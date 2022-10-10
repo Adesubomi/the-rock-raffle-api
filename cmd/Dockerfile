@@ -28,4 +28,6 @@ RUN ["chmod", "a+r+w", "./database.sqlite"]
 
 RUN ["pwd"]
 RUN ["chmod", "+x", "./cmd/start.sh"]
-CMD ["./cmd/start.sh"]
+RUN ["./cmd/start.sh"]
+
+CMD ["php", "artisan", "serve"]
