@@ -1,6 +1,7 @@
-FROM richarvey/nginx-php-fpm:1.9.1
+FROM richarvey/nginx-php-fpm:2.1.2
 
-COPY .. .
+WORKDIR /var/www/html/
+COPY . .
 
 # Image config
 ENV SKIP_COMPOSER 1
@@ -14,8 +15,17 @@ ENV APP_ENV production
 ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
 
+# Laravel config - testing db
+ENV DB_CONNECTION sqlite
+ENV DB_DATABASE /var/www/html/database.sqlite
+
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-RUN ["chmod", "+x", "./start.sh"]
-CMD ["./start.sh"]
+# [temporary] Set permission for db file
+RUN ["touch", "./database.sqlite"]
+RUN ["chmod", "a+r+w", "./database.sqlite"]
+
+RUN ["pwd"]
+RUN ["chmod", "+x", "./cmd/start.sh"]
+CMD ["./cmd/start.sh"]
